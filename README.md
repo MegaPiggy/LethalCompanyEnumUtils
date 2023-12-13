@@ -1,2 +1,2 @@
 # LethalCompanyEnumUtils
-A library to help with creating and getting Enums
+A library to help with utilities for creating and getting Enums.
