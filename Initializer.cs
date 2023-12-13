@@ -9,7 +9,7 @@ namespace LCEnumUtils
     {
         private const string modGUID = "MegaPiggy.EnumUtils";
         private const string modName = "Enum Utils";
-        private const string modVersion = "1.0.1";
+        private const string modVersion = "1.0.3";
 
         private readonly Harmony harmony = new Harmony(modGUID);
 
@@ -19,10 +19,7 @@ namespace LCEnumUtils
 
         private void Awake()
         {
-            if (Instance == null)
-            {
-                Instance = this;
-            }
+            if (Instance == null) Instance = this;
 
             EnumUtils.Initialize(harmony, Logger);
             Logger.LogInfo($"Plugin {modName} is loaded with version {modVersion}!");

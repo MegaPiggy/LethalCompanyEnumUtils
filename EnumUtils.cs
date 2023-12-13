@@ -1382,4 +1382,26 @@ public static class EnumUtils
         var item = Rng.Next(0, values.Length);
         return (T)values.GetValue(item);
     }
+
+    /// <summary>
+    /// Throws a <see cref="NotAnEnumException"/> if <paramref name="type"/> is not an enum.
+    /// </summary>
+    /// <param name="type">Type to check</param>
+    /// <exception cref="ArgumentNullException"><paramref name="type"/> is <see langword="null"/></exception>
+    /// <exception cref="NotAnEnumException"><paramref name="type"/> is not an enum</exception>
+    public static void ThrowIfNotEnum(Type type)
+    {
+        if (type == null) throw new ArgumentNullException("type");
+        if (!type.IsEnum) throw new NotAnEnumException(type);
+    }
+
+    /// <summary>
+    /// Throws a <see cref="NotAnEnumException"/> if <typeparamref name="T"/> is not an enum.
+    /// </summary>
+    /// <typeparam name="T">Type to check</typeparam>
+    /// <exception cref="NotAnEnumException"><typeparamref name="T"/> is not an enum</exception>
+    public static void ThrowIfNotEnum<T>()
+    {
+        if (!typeof(T).IsEnum) throw new NotAnEnumException(typeof(T));
+    }
 }

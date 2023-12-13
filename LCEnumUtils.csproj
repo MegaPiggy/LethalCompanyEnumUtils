@@ -10,6 +10,7 @@
     <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
     <DebugType>portable</DebugType>
     <BepInExCore>$(AppData)\r2modmanPlus-local\LethalCompany\profiles\Default\BepInEx\core</BepInExCore>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="LethalCompanyGameLibs" Version="45.0.0" />
