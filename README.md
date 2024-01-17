@@ -1,3 +1,5 @@
+[![Thunderstore](https://img.shields.io/thunderstore/v/MegaPiggy/EnumUtils?logo=thunderstore&logoColor=white)](https://thunderstore.io/c/lethal-company/p/MegaPiggy/EnumUtils)
+
 # LethalCompanyEnumUtils
 A library with utilities for dynamically creating and getting Enums.
 
