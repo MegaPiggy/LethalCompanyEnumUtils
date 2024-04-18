@@ -1,5 +1,5 @@
 {
-  "name": "EnumUtils",
+  "name": "CWEnumUtils",
   "version_number": "1.0.3",
   "website_url": "https://github.com/MegaPiggy/LethalCompanyEnumUtils",
   "description": "A library to help with creating and getting Enums",

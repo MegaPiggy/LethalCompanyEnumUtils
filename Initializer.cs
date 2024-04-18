@@ -2,7 +2,7 @@
 using BepInEx.Logging;
 using HarmonyLib;
 
-namespace LCEnumUtils
+namespace CWEnumUtils
 {
     [BepInPlugin(modGUID, modName, modVersion)]
     internal class Initializer : BaseUnityPlugin
