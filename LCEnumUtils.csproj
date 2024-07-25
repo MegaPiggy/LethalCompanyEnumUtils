@@ -81,6 +81,6 @@
   </Target>
 
   <Target Name="PublishThunderstore">
-    <Exec Command="dotnet tcli publish --config-path $(ProjectDir)thunderstore.toml --file $(ProjectDir)Build/*-$(VersionPrefix).zip" />
+    <Exec Command="dotnet tcli publish --config-path $(ProjectDir)thunderstore.toml --file $(ProjectDir)*-$(VersionPrefix).zip" />
   </Target>
 </Project>

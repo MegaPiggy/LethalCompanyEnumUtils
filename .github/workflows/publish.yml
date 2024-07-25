@@ -84,7 +84,7 @@ jobs:
 
       - name: Publish to NuGet.org
         run: |
-          dotnet nuget push ./Build/*.nupkg --api-key ${{ secrets.NUGET_API_TOKEN }} --source https://api.nuget.org/v3/index.json
+          dotnet nuget push ./*.nupkg --api-key ${{ secrets.NUGET_API_TOKEN }} --source https://api.nuget.org/v3/index.json
 
   deploy-thunderstore:
     name: Deploy to Thunderstore

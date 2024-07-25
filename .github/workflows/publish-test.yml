@@ -84,7 +84,7 @@ jobs:
 
       - name: Publish to NuGet.org
         run: |
-          dotnet nuget push ./Build/*.nupkg --source https://api.nuget.org/v3/index.json
+          dotnet nuget push ./*.nupkg --source https://api.nuget.org/v3/index.json
 
   deploy-thunderstore:
     name: Deploy to Thunderstore
@@ -107,6 +107,10 @@ jobs:
       - name: Restore dotnet tools
         run: |
           dotnet tool restore
+
+      - name: List files
+        run: |
+          ls -lR
 
       - name: Publish to Thunderstore
         env:
