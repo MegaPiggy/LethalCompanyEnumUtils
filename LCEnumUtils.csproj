@@ -5,8 +5,9 @@
     <TargetFramework>net48</TargetFramework>
     <LangVersion>default</LangVersion>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DebugType>portable</DebugType>
+    <DebugType>embedded</DebugType>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <EmbedAllSources>true</EmbedAllSources>
 
     <OutputPath>Build</OutputPath>
     
@@ -42,10 +43,6 @@
   <!-- Development dependencies (Set PrivateAssets="all") -->
   <ItemGroup>
     <PackageReference Include="BepInEx.Analyzers" Version="1.0.8" PrivateAssets="all" />
-    <PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.1">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2" Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>

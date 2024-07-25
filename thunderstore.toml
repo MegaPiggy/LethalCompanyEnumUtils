@@ -23,10 +23,6 @@ source = "Build/LCEnumUtils.dll"
 target = "/"
 
 [[build.copy]]
-source = "Build/LCEnumUtils.pdb"
-target = "/"
-
-[[build.copy]]
 source = "Build/LCEnumUtils.xml"
 target = "/"
 
