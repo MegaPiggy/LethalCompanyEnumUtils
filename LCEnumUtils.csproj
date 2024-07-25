@@ -1,32 +1,76 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
+    <OutputType>Library</OutputType>
     <TargetFramework>net48</TargetFramework>
     <LangVersion>default</LangVersion>
-    <Copyright>Copyright © 2023 MegaPiggy</Copyright>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>portable</DebugType>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+
+    <OutputPath>Build</OutputPath>
+    
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
     <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
     <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
-    <DebugType>portable</DebugType>
-    <BepInExCore>$(AppData)\r2modmanPlus-local\LethalCompany\profiles\Default\BepInEx\core</BepInExCore>
-    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+
+    <AssemblyName>LCEnumUtils</AssemblyName>
+    <Product>LCEnumUtils</Product>
+    <Authors>MegaPiggy</Authors>
+    <Title>Lethal Company Enum Utils</Title>
+    <Description>Lethal Company library for dynamically creating and getting Enums.</Description>
+    <VersionPrefix>1.0.3</VersionPrefix>
+    <Copyright>Copyright © 2023 MegaPiggy</Copyright>
+
+    <PackageId>MegaPiggy.LCEnumUtils</PackageId>
+    <PackageTags>Lethal Company;Enum;Utilities;Creation</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageProjectUrl>https://github.com/MegaPiggy/LethalCompanyEnumUtils</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/MegaPiggy/LethalCompanyEnumUtils.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <IsPackable>true</IsPackable>
   </PropertyGroup>
-  
+
+  <PropertyGroup Condition="$(CI) == 'true'">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+  </PropertyGroup>
+
+
+  <!-- Development dependencies (Set PrivateAssets="all") -->
   <ItemGroup>
-    <PackageReference Include="LethalCompanyGameLibs" Version="45.0.0" Publicize="true" PrivateAssets="all" />
+    <PackageReference Include="BepInEx.Analyzers" Version="1.0.8" PrivateAssets="all" />
+    <PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2" Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <!-- Runtime dependencies -->
+  <ItemGroup>
+    <PackageReference Include="LethalCompanyGameLibs" Version="45.0.0" PrivateAssets="all" />
     <PackageReference Include="BepInEx.Core" Version="5.4.21" PrivateAssets="all" />
   </ItemGroup>
-  
+
+  <!-- Extraneous .nupkg includes -->
   <ItemGroup>
     <None Include="icon.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
     </None>
     <None Include="manifest.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="README.md">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
     </None>
   </ItemGroup>
   <ProjectExtensions>
@@ -34,4 +78,12 @@
       <UserProperties manifest_1json__JsonSchema="" />
     </VisualStudio>
   </ProjectExtensions>
+
+  <Target Name="PackThunderstore" AfterTargets="PostBuildEvent" Condition="$(Configuration) == 'Release'">
+    <Exec Command="dotnet tcli build --config-path $(ProjectDir)thunderstore.toml --package-version $(VersionPrefix)" />
+  </Target>
+
+  <Target Name="PublishThunderstore">
+    <Exec Command="dotnet tcli publish --config-path $(ProjectDir)thunderstore.toml --file $(ProjectDir)Build/*-$(VersionPrefix).zip" />
+  </Target>
 </Project>
