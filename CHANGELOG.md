@@ -1,3 +1,8 @@
+### 1.0.4
+- Made a nuget package
+- Added a way to check if an enum is dynamic (modded) or static (vanilla).
+- Some more methods.
+
 ### 1.0.3
 - Added a `ThrowIfNotEnum` method.
 

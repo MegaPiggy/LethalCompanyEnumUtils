@@ -9,7 +9,7 @@ namespace LCEnumUtils
     {
         private const string modGUID = "MegaPiggy.EnumUtils";
         private const string modName = "Enum Utils";
-        private const string modVersion = "1.0.3";
+        private const string modVersion = "1.0.4";
 
         private readonly Harmony harmony = new Harmony(modGUID);
 

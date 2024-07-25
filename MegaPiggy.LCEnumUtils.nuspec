@@ -5,7 +5,7 @@
     <id>MegaPiggy.LCEnumUtils</id>
 
     <!-- Package version number that is used when resolving dependencies -->
-    <version>1.0.3</version>
+    <version>1.0.4</version>
 
     <!-- Title -->
     <title>Lethal Company Enum Utils</title>
@@ -51,7 +51,6 @@
       <group targetFramework=".NETStandard2.1">
         <dependency id="BepInEx.Core" version="5.4.21" />
         <dependency id="UnityEngine.Modules" version="2022.3.9" />
-        <dependency id="LethalCompany.GameLibs.Steam" version="45.0.0-ngd.0" />
       </group>
     </dependencies>
 
