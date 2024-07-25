@@ -33,6 +33,8 @@
     <RepositoryUrl>https://github.com/MegaPiggy/LethalCompanyEnumUtils.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <IsPackable>true</IsPackable>
+    
+    <NuspecFile>MegaPiggy.LCEnumUtils.nuspec</NuspecFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="$(CI) == 'true'">

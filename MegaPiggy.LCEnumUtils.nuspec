@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package >
+  <metadata>
+    <!-- Identifier that must be unique within the hosting gallery -->
+    <id>MegaPiggy.LCEnumUtils</id>
+
+    <!-- Package version number that is used when resolving dependencies -->
+    <version>1.0.3</version>
+
+    <!-- Title -->
+    <title>Lethal Company Enum Utils</title>
+
+    <!-- 
+      The description can be used in package manager UI. Note that the
+      nuget.org gallery uses information you add in the portal. 
+    -->
+    <description>Lethal Company library for dynamically creating and getting Enums.</description>
+
+    <!-- Authors contain text that appears directly on the gallery -->
+    <authors>MegaPiggy</authors>
+
+    <!-- 
+      Owners are typically nuget.org identities that allow gallery
+      users to easily find other packages by the same owners.  
+    -->
+    <owners>MegaPiggy</owners>
+
+    <!-- Project URL provides a link for the gallery -->
+    <projectUrl>https://github.com/MegaPiggy/LethalCompanyEnumUtils</projectUrl>
+
+    <repository type="git" url="https://github.com/MegaPiggy/LethalCompanyEnumUtils.git" />
+
+    <!-- License information is displayed on the gallery -->
+    <license type="expression">MIT</license>
+
+    <!-- Icon is used in Visual Studio's package manager UI -->
+    <icon>images\icon.png</icon>
+    <iconUrl>https://raw.githubusercontent.com/MegaPiggy/LethalCompanyEnumUtils/main/icon.png</iconUrl>
+
+    <!-- 
+      If true, this value prompts the user to accept the license when
+      installing the package. 
+    -->
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+
+    <!-- Tags appear in the gallery and can be used for tag searches -->
+    <tags>Lethal Company;Enum;Utilities;Creation</tags>
+
+    <!-- Dependencies are automatically installed when the package is installed -->
+    <dependencies>
+      <group targetFramework=".NETStandard2.1">
+        <dependency id="BepInEx.Core" version="5.4.21" />
+        <dependency id="UnityEngine.Modules" version="2022.3.9" />
+        <dependency id="LethalCompany.GameLibs.Steam" version="45.0.0-ngd.0" />
+      </group>
+    </dependencies>
+
+    <!-- References are automatically added to the project after the package is installed -->
+    <references>
+      <group targetFramework=".NETStandard2.1">
+        <reference file="LCEnumUtils.dll" />
+      </group>
+    </references>
+  </metadata>
+  <files>
+    <file src="Build\LCEnumUtils.dll" target="lib\netstandard2.1" />
+    <file src="Build\LCEnumUtils.xml" target="lib\netstandard2.1" />
+    <file src="icon.png" target="images\" />
+    <file src="README.md" target="\" />
+  </files>
+</package>
