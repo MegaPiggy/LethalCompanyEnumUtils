@@ -4,14 +4,10 @@ using HarmonyLib;
 
 namespace LCEnumUtils
 {
-    [BepInPlugin(modGUID, modName, modVersion)]
+    [BepInPlugin(PluginInfo.ModGUID, PluginInfo.ModName, PluginInfo.ModVersion)]
     internal class Initializer : BaseUnityPlugin
     {
-        private const string modGUID = "MegaPiggy.EnumUtils";
-        private const string modName = "Enum Utils";
-        private const string modVersion = "1.0.4";
-
-        private readonly Harmony harmony = new Harmony(modGUID);
+        private readonly Harmony harmony = new Harmony(PluginInfo.ModGUID);
 
         private static Initializer Instance;
 
@@ -22,7 +18,7 @@ namespace LCEnumUtils
             if (Instance == null) Instance = this;
 
             EnumUtils.Initialize(harmony, Logger);
-            Logger.LogInfo($"Plugin {modName} is loaded with version {modVersion}!");
+            Logger.LogInfo($"Plugin {PluginInfo.ModName} is loaded with version {PluginInfo.ModVersion}!");
         }
     }
 }
