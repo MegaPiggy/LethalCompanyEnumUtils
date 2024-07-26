@@ -411,7 +411,7 @@ public static class EnumUtils
     /// <typeparam name="T">Type of the enum</typeparam>
     /// <param name="value">The enum value to check</param>
     /// <returns><see langword="true"/> if it is, <see langword="false"/> if not.</returns>
-    public static bool IsDynamic<T>(T value) where T : Enum => IsDynamic(typeof(T), value);
+    public static bool IsDynamic<T>(this T value) where T : Enum => IsDynamic(typeof(T), value);
 
     /// <summary>
     /// Check if it is a custom enum value
@@ -468,7 +468,7 @@ public static class EnumUtils
     /// <typeparam name="T">Type of the enum</typeparam>
     /// <param name="value">The enum value to check</param>
     /// <returns><see langword="true"/> if it is, <see langword="false"/> if not.</returns>
-    public static bool IsStatic<T>(T value) where T : Enum => IsStatic(typeof(T), value);
+    public static bool IsStatic<T>(this T value) where T : Enum => IsStatic(typeof(T), value);
 
     /// <summary>
     /// Check if it is <b>not</b> a custom enum value
@@ -1625,7 +1625,7 @@ public static class EnumUtils
     /// <param name="flags">The value to get the flags from.</param>
     /// <returns>All the flags that the value had.</returns>
     /// <exception cref="ArgumentException">When the enum doesn't have the flags attribute.</exception>
-    public static T[] GetFlagsValues<T>(T flags) where T : Enum
+    public static T[] GetFlagsValues<T>(this T flags) where T : Enum
     {
         if (!IsFlagsEnum<T>())
             throw new ArgumentException(string.Format("The type '{0}' must have an attribute '{1}'.", typeof(T), typeof(FlagsAttribute)));
@@ -1637,7 +1637,7 @@ public static class EnumUtils
     /// <param name="values"></param>
     /// <returns>All the flags values combined into one enum value.</returns>
     /// <exception cref="ArgumentException">When the enum doesn't have the flags attribute.</exception>
-    public static T CombineFlagsValues<T>(T[] values) where T : Enum
+    public static T CombineFlagsValues<T>(this T[] values) where T : Enum
     {
         if (!IsFlagsEnum<T>())
             throw new ArgumentException(string.Format("The type '{0}' must have an attribute '{1}'.", typeof(T), typeof(FlagsAttribute)));
