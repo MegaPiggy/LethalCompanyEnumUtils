@@ -987,6 +987,20 @@ public static class EnumUtils
     }
 
     /// <summary>
+    /// Gets all names in an enum, skipping the first (usually default,none) value
+    /// </summary>
+    /// <param name="enumType">Type of the enum</param>
+    /// <returns>An array of the names (excluding the first value) in the enum</returns>
+    /// <exception cref="ArgumentNullException"><paramref name="enumType"/> is <see langword="null"/></exception>
+    /// <exception cref="NotAnEnumException"><paramref name="enumType"/> is not an enum</exception>
+    public static string[] GetNamesWithoutFirst(Type enumType)
+    {
+        if (enumType == null) throw new ArgumentNullException("enumType");
+        if (!enumType.IsEnum) throw new NotAnEnumException(enumType);
+        return System.Enum.GetNames(enumType).Skip(1).ToArray();
+    }
+
+    /// <summary>
     /// Gets all values in an enum
     /// </summary>
     /// <param name="enumType">Type of the enum</param>
@@ -998,6 +1012,20 @@ public static class EnumUtils
         if (enumType == null) throw new ArgumentNullException("enumType");
         if (!enumType.IsEnum) throw new NotAnEnumException(enumType);
         return System.Enum.GetValues(enumType).Cast<object>().ToArray();
+    }
+
+    /// <summary>
+    /// Gets all enum values in an enum, skipping the first (usually default,none) value
+    /// </summary>
+    /// <param name="enumType">Type of the enum</param>
+    /// <returns>An array of the values (excluding the first value) in the enum</returns>
+    /// <exception cref="ArgumentNullException"><paramref name="enumType"/> is <see langword="null"/></exception>
+    /// <exception cref="NotAnEnumException"><paramref name="enumType"/> is not an enum</exception>
+    public static object[] GetValuesWithoutFirst(Type enumType)
+    {
+        if (enumType == null) throw new ArgumentNullException("enumType");
+        if (!enumType.IsEnum) throw new NotAnEnumException(enumType);
+        return System.Enum.GetValues(enumType).Cast<object>().Skip(1).ToArray();
     }
 
     /// <summary>
