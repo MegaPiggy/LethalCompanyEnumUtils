@@ -1735,7 +1735,26 @@ public static class EnumUtils
         if (!IsFlagsEnum<T>())
             throw new ArgumentException(string.Format("The type '{0}' must have an attribute '{1}'.", typeof(T), typeof(FlagsAttribute)));
 
-        return GetValues<T>().Where(value => flags.HasFlag(value)).ToArray();
+        Type underlyingType = GetUnderlyingType<T>();
+
+        ulong num = Convert.ToUInt64(flags, CultureInfo.InvariantCulture);
+        var enumNameValues = GetValues<T>().Select(value => Convert.ToUInt64(value, CultureInfo.InvariantCulture));
+        IList<T> selectedFlagsValues = new List<T>();
+
+        foreach (ulong enumNameValue in enumNameValues)
+        {
+            if ((num & enumNameValue) == enumNameValue && enumNameValue != 0)
+            {
+                selectedFlagsValues.Add((T)Convert.ChangeType(enumNameValue, underlyingType, CultureInfo.CurrentCulture));
+            }
+        }
+
+        if (selectedFlagsValues.Count == 0 && enumNameValues.SingleOrDefault(v => v == 0) != 0)
+        {
+            selectedFlagsValues.Add(default(T));
+        }
+
+        return selectedFlagsValues.ToArray();
     }
 
     /// <typeparam name="T">Type of the enum</typeparam>
