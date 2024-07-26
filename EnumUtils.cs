@@ -1621,6 +1621,67 @@ public static class EnumUtils
         if (!typeof(T).IsEnum) throw new NotAnEnumException(typeof(T));
     }
 
+    /// <summary>
+    /// Casts an Enum to a specific type
+    /// </summary>
+    public static T EnumCast<T>(this Enum value) where T : Enum
+    {
+        if (value.GetType() != typeof(T))
+            throw new InvalidCastException("Enums are not of the same type");
+        return (T)(object)value;
+    }
+
+    /// <summary>
+    /// Casts an Enum to a specific type
+    /// </summary>
+    public static IEnumerable<T> EnumCast<T>(this IEnumerable<Enum> values) where T : Enum => values.Select(e => e.EnumCast<T>());
+
+    /// <inheritdoc cref="Enum.HasFlag(Enum)"/>
+    public static bool HasFlag<T>(T flags, T flag) where T : Enum
+        => flags.HasFlag(flag);
+
+    /// <summary>
+    /// Sets a flag bit to 0 or 1
+    /// </summary>
+    public static T SetFlag<T>(this T flags, T flag, bool setBit) where T : Enum
+        => setBit ? AddFlag(flags, flag) : RemoveFlag(flags, flag);
+
+    /// <summary>
+    /// Adds a flag to an enum
+    /// </summary>
+    public static T AddFlag<T>(this T flags, T flag) where T : Enum
+        => FromObject<T>(Convert.ToUInt64(flags) | Convert.ToUInt64(flag));
+
+    /// <summary>
+    /// Removes a flag from an enum
+    /// </summary>
+    public static T RemoveFlag<T>(this T flags, T flag) where T : Enum
+        => FromObject<T>(Convert.ToUInt64(flags) & ~Convert.ToUInt64(flag));
+
+    /// <summary>
+    /// Toggles a flag in an enum
+    /// </summary>
+    public static T ToggleFlag<T>(this T flags, T flag) where T : Enum
+        => FromObject<T>(Convert.ToUInt64(flags) ^ Convert.ToUInt64(flag));
+
+    /// <summary>
+    /// 1 &lt;&lt; <paramref name="index"/>
+    /// </summary>
+    public static T GetFlagsValue<T>(int index) where T : Enum
+        => FromObject<T>(1 << index);
+
+    /// <summary>
+    /// 0
+    /// </summary>
+    public static T GetNoFlags<T>() where T : Enum
+        => FromObject<T>(0);
+
+    /// <summary>
+    /// ~0
+    /// </summary>
+    public static T GetAllFlags<T>() where T : Enum
+        => FromObject<T>(~0);
+
     /// <typeparam name="T">Type of the enum</typeparam>
     /// <param name="flags">The value to get the flags from.</param>
     /// <returns>All the flags that the value had.</returns>
@@ -1645,29 +1706,11 @@ public static class EnumUtils
         T combined = default(T);
         if (values != null && values.Length > 0)
         {
-            var or = Operator<T>.Or;
             foreach (var value in values)
             {
-                combined = or(combined, value);
+                combined = combined.AddFlag<T>(value);
             }
         }
         return combined;
-    }
-
-    private static class Operator<T>
-    {
-        public static readonly Func<T, T, T> Or;
-
-        static Operator()
-        {
-            var dn = new DynamicMethod("or", typeof(T),
-                new[] { typeof(T), typeof(T) }, typeof(EnumUtils));
-            var il = dn.GetILGenerator();
-            il.Emit(OpCodes.Ldarg_0);
-            il.Emit(OpCodes.Ldarg_1);
-            il.Emit(OpCodes.Or);
-            il.Emit(OpCodes.Ret);
-            Or = (Func<T, T, T>)dn.CreateDelegate(typeof(Func<T, T, T>));
-        }
     }
 }
