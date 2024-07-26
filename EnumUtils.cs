@@ -1368,6 +1368,14 @@ public static class EnumUtils
     public static string[] GetNamesWithoutFirst<T>() where T : Enum => Enum.GetNames(typeof(T)).Skip(1).ToArray();
 
     /// <summary>
+    /// Gets all names in an enum with exclusions
+    /// </summary>
+    /// <typeparam name="T">Type of the enum</typeparam>
+    /// <param name="excluded">Enums to exclude from the randomization</param>
+    /// <returns>The list of names in the enum</returns>
+    public static string[] GetNames<T>(params T[] excluded) where T : Enum => GetValues<T>(excluded).Select(GetName).ToArray();
+
+    /// <summary>
     /// Gets all enum values in an enum
     /// </summary>
     /// <typeparam name="T">Type of the enum</typeparam>
@@ -1380,6 +1388,14 @@ public static class EnumUtils
     /// <typeparam name="T">Type of the enum</typeparam>
     /// <returns>The list of all values (excluding the first value) in the enum</returns>
     public static T[] GetValuesWithoutFirst<T>() where T : Enum => Enum.GetValues(typeof(T)).Cast<T>().Skip(1).ToArray();
+
+    /// <summary>
+    /// Gets all enum values in an enum with exclusions
+    /// </summary>
+    /// <typeparam name="T">Type of the enum</typeparam>
+    /// <param name="excluded">Enums to exclude from the randomization</param>
+    /// <returns>The list of all values in the enum</returns>
+    public static T[] GetValues<T>(params T[] excluded) where T : Enum => Enum.GetValues(typeof(T)).Cast<T>().Where(v => !excluded.Contains(v)).ToArray();
 
     /// <summary>
     /// Gets all dynamic (custom) enum values in an enum
