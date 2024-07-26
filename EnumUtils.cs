@@ -7,6 +7,7 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
+using static UnityEngine.Rendering.DebugUI;
 
 /// <summary>
 /// An utility class to help with Enums
@@ -329,11 +330,14 @@ public static class EnumUtils
             patches.Add(enumType, patch);
         }
 
-        patch.AddValue((ulong)Convert.ToInt64(value, CultureInfo.InvariantCulture), name);
+        patch.AddValue(value.ToFriendlyValue(), name);
 
         // Clear enum cache
         ClearEnumCache(enumType);
     }
+
+    internal static ulong ToFriendlyValue<T>(this T value) where T : Enum => (ulong)Convert.ToInt64(value, CultureInfo.InvariantCulture);
+    internal static ulong ToFriendlyValue(this object value) => (ulong)Convert.ToInt64(value, CultureInfo.InvariantCulture);
 
     /// <summary>
     /// Removes a custom enum value from being associated with a name
@@ -387,7 +391,7 @@ public static class EnumUtils
     {
         if (enumType == null) throw new ArgumentNullException("enumType");
         if (!enumType.IsEnum) throw new NotAnEnumException(enumType);
-        ulong uvalue = (ulong)Convert.ToInt64(value, CultureInfo.InvariantCulture);
+        ulong uvalue = value.ToFriendlyValue();
         if (TryGetRawPatch(enumType, out EnumPatch patch) && patch.HasValue(uvalue))
         {
             patch.RemoveValue(uvalue);
@@ -450,7 +454,7 @@ public static class EnumUtils
         if (enumType == null) throw new ArgumentNullException("enumType");
         if (!enumType.IsEnum) throw new NotAnEnumException(enumType);
 
-        ulong uvalue = (ulong)Convert.ToInt64(value, CultureInfo.InvariantCulture);
+        ulong uvalue = value.ToFriendlyValue();
         return TryGetRawPatch(enumType, out EnumPatch patch) && patch.HasValue(uvalue);
     }
 
@@ -1694,19 +1698,19 @@ public static class EnumUtils
     /// Adds a flag to an enum
     /// </summary>
     public static T AddFlag<T>(this T flags, T flag) where T : Enum
-        => FromObject<T>(Convert.ToUInt64(flags) | Convert.ToUInt64(flag));
+        => FromObject<T>(flags.ToFriendlyValue() | flag.ToFriendlyValue());
 
     /// <summary>
     /// Removes a flag from an enum
     /// </summary>
     public static T RemoveFlag<T>(this T flags, T flag) where T : Enum
-        => FromObject<T>(Convert.ToUInt64(flags) & ~Convert.ToUInt64(flag));
+        => FromObject<T>(flags.ToFriendlyValue() & ~flag.ToFriendlyValue());
 
     /// <summary>
     /// Toggles a flag in an enum
     /// </summary>
     public static T ToggleFlag<T>(this T flags, T flag) where T : Enum
-        => FromObject<T>(Convert.ToUInt64(flags) ^ Convert.ToUInt64(flag));
+        => FromObject<T>(flags.ToFriendlyValue() ^ flag.ToFriendlyValue());
 
     /// <summary>
     /// 1 &lt;&lt; <paramref name="index"/>
@@ -1737,8 +1741,8 @@ public static class EnumUtils
 
         Type underlyingType = GetUnderlyingType<T>();
 
-        ulong num = Convert.ToUInt64(flags, CultureInfo.InvariantCulture);
-        var enumNameValues = GetValues<T>().Select(value => Convert.ToUInt64(value, CultureInfo.InvariantCulture));
+        ulong num = flags.ToFriendlyValue();
+        var enumNameValues = GetValues<T>().Select(ToFriendlyValue);
         IList<T> selectedFlagsValues = new List<T>();
 
         foreach (ulong enumNameValue in enumNameValues)
