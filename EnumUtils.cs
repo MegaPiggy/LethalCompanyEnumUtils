@@ -1224,11 +1224,25 @@ public static class EnumUtils
     public static string[] GetNames<T>() where T : Enum => Enum.GetNames(typeof(T));
 
     /// <summary>
+    /// Gets all names in an enum, skipping the first (usually default,none) value
+    /// </summary>
+    /// <typeparam name="T">Type of the enum</typeparam>
+    /// <returns>The list of all names (excluding the first value) in the enum</returns>
+    public static string[] GetNamesWithoutFirst<T>() where T : Enum => Enum.GetNames(typeof(T)).Skip(1).ToArray();
+
+    /// <summary>
     /// Gets all enum values in an enum
     /// </summary>
     /// <typeparam name="T">Type of the enum</typeparam>
     /// <returns>The list of all values in the enum</returns>
     public static T[] GetValues<T>() where T : Enum => Enum.GetValues(typeof(T)).Cast<T>().ToArray();
+
+    /// <summary>
+    /// Gets all enum values in an enum, skipping the first (usually default,none) value
+    /// </summary>
+    /// <typeparam name="T">Type of the enum</typeparam>
+    /// <returns>The list of all values (excluding the first value) in the enum</returns>
+    public static T[] GetValuesWithoutFirst<T>() where T : Enum => Enum.GetValues(typeof(T)).Cast<T>().Skip(1).ToArray();
 
     /// <summary>
     /// Counts the number of enums values contained in a given enum type.
