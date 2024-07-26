@@ -424,7 +424,7 @@ public static class EnumUtils
     /// </summary>
     /// <typeparam name="T">Type of the enum</typeparam>
     /// <returns><see langword="true"/> if it does, <see langword="false"/> if not.</returns>
-    public static bool IsPowerOfTwoEnum<T>() where T : Enum => typeof(T).IsDefined(typeof(FlagsAttribute), false);
+    public static bool IsPowerOfTwoEnum<T>() where T : Enum => IsFlagsEnum<T>();
 
     /// <summary>
     /// Does this enum use power of twos?
@@ -433,7 +433,23 @@ public static class EnumUtils
     /// <returns><see langword="true"/> if it does, <see langword="false"/> if not.</returns>
     /// <exception cref="ArgumentNullException"><paramref name="enumType"/> is <see langword="null"/></exception>
     /// <exception cref="NotAnEnumException"><paramref name="enumType"/> is not an enum</exception>
-    public static bool IsPowerOfTwoEnum(Type enumType)
+    public static bool IsPowerOfTwoEnum(Type enumType) => IsFlagsEnum(enumType);
+
+    /// <summary>
+    /// Does this enum have the flags attribute?
+    /// </summary>
+    /// <typeparam name="T">Type of the enum</typeparam>
+    /// <returns><see langword="true"/> if it does, <see langword="false"/> if not.</returns>
+    public static bool IsFlagsEnum<T>() where T : Enum => typeof(T).IsDefined(typeof(FlagsAttribute), false);
+
+    /// <summary>
+    /// Does this enum have the flags attribute?
+    /// </summary>
+    /// <param name="enumType">Type of the enum</param>
+    /// <returns><see langword="true"/> if it does, <see langword="false"/> if not.</returns>
+    /// <exception cref="ArgumentNullException"><paramref name="enumType"/> is <see langword="null"/></exception>
+    /// <exception cref="NotAnEnumException"><paramref name="enumType"/> is not an enum</exception>
+    public static bool IsFlagsEnum(Type enumType)
     {
         if (enumType == null) throw new ArgumentNullException("enumType");
         if (!enumType.IsEnum) throw new NotAnEnumException(enumType);
@@ -1469,5 +1485,55 @@ public static class EnumUtils
     public static void ThrowIfNotEnum<T>()
     {
         if (!typeof(T).IsEnum) throw new NotAnEnumException(typeof(T));
+    }
+
+    /// <typeparam name="T">Type of the enum</typeparam>
+    /// <param name="flags">The value to get the flags from.</param>
+    /// <returns>All the flags that the value had.</returns>
+    /// <exception cref="ArgumentException">When the enum doesn't have the flags attribute.</exception>
+    public static T[] GetFlagsValues<T>(T flags) where T : Enum
+    {
+        if (!IsFlagsEnum<T>())
+            throw new ArgumentException(string.Format("The type '{0}' must have an attribute '{1}'.", typeof(T), typeof(FlagsAttribute)));
+
+        return GetValues<T>().Where(value => flags.HasFlag(value)).ToArray();
+    }
+
+    /// <typeparam name="T">Type of the enum</typeparam>
+    /// <param name="values"></param>
+    /// <returns>All the flags values combined into one enum value.</returns>
+    /// <exception cref="ArgumentException">When the enum doesn't have the flags attribute.</exception>
+    public static T CombineFlagsValues<T>(T[] values) where T : Enum
+    {
+        if (!IsFlagsEnum<T>())
+            throw new ArgumentException(string.Format("The type '{0}' must have an attribute '{1}'.", typeof(T), typeof(FlagsAttribute)));
+
+        T combined = default(T);
+        if (values != null && values.Length > 0)
+        {
+            var or = Operator<T>.Or;
+            foreach (var value in values)
+            {
+                combined = or(combined, value);
+            }
+        }
+        return combined;
+    }
+
+    private static class Operator<T>
+    {
+        public static readonly Func<T, T, T> Or;
+
+        static Operator()
+        {
+            var dn = new DynamicMethod("or", typeof(T),
+                new[] { typeof(T), typeof(T) }, typeof(EnumUtils));
+            var il = dn.GetILGenerator();
+            il.Emit(OpCodes.Ldarg_0);
+            il.Emit(OpCodes.Ldarg_1);
+            il.Emit(OpCodes.Or);
+            il.Emit(OpCodes.Ret);
+            Or = (Func<T, T, T>)dn.CreateDelegate(typeof(Func<T, T, T>));
+        }
     }
 }
