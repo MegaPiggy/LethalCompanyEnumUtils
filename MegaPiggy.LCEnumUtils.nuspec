@@ -5,7 +5,7 @@
     <id>MegaPiggy.LCEnumUtils</id>
 
     <!-- Package version number that is used when resolving dependencies -->
-    <version>1.0.4</version>
+    <version>1.0.5</version>
 
     <!-- Title -->
     <title>Lethal Company Enum Utils</title>

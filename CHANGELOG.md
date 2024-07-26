@@ -1,3 +1,7 @@
+### 1.0.5
+- Made plugin info accessible
+- Some more methods.
+
 ### 1.0.4
 - Made a nuget package
 - Added a way to check if an enum is dynamic (modded) or static (vanilla).

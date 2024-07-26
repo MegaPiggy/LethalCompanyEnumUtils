@@ -1,6 +1,6 @@
 {
   "name": "EnumUtils",
-  "version_number": "1.0.4",
+  "version_number": "1.0.5",
   "website_url": "https://github.com/MegaPiggy/LethalCompanyEnumUtils",
   "description": "A library to help with creating and getting Enums",
   "dependencies": [

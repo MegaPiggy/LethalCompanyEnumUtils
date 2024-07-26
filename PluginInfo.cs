@@ -20,6 +20,6 @@ namespace LCEnumUtils
         /// <summary>
         /// Version
         /// </summary>
-        public const string ModVersion = "1.0.4";
+        public const string ModVersion = "1.0.5";
     }
 }
