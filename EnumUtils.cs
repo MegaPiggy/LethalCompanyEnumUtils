@@ -2,6 +2,7 @@
 using HarmonyLib;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -1420,6 +1421,32 @@ public static class EnumUtils
         var names = Enum.GetNames(typeof(T)).Cast<T>().Where(v => !excluded.Contains(v)).ToArray();
         var item = Rng.Next(0, names.Length);
         return (string)names.GetValue(item);
+    }
+
+    /// <summary>
+    /// Returns all enums with their descriptions in a dictionary.
+    /// <see cref="DescriptionAttribute"/> needs to be applied on enum values to set a description text.
+    /// </summary>
+    /// <typeparam name="T">Type of the enum</typeparam>
+    /// <returns>Dictionary of enum-to-description mappings.</returns>
+    public static IDictionary<T, string> GetDescriptions<T>() where T : Enum
+    {
+        var type = typeof(T);
+        var dictionary = new Dictionary<T, string>();
+
+        foreach (var key in GetValues<T>())
+        {
+            var field = type.GetField($"{key}");
+            string description = null;
+            if (Attribute.GetCustomAttribute(field, typeof(DescriptionAttribute)) is DescriptionAttribute attribute)
+            {
+                description = attribute.Description;
+            }
+
+            dictionary.Add(key, description);
+        }
+
+        return dictionary;
     }
 
     /// <summary>
