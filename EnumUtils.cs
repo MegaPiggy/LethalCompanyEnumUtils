@@ -1398,6 +1398,31 @@ public static class EnumUtils
     }
 
     /// <summary>
+    /// Gets a random name from an enum
+    /// </summary>
+    /// <typeparam name="T">Type of the enum</typeparam>
+    /// <returns>A randomly selected enum name from the given enum type</returns>
+    public static string GetRandomName<T>() where T : Enum
+    {
+        var names = EnumUtils.GetNames<T>();
+        var item = Rng.Next(0, names.Length);
+        return (string)names.GetValue(item);
+    }
+
+    /// <summary>
+    /// Gets a random name from an enum with exclusions
+    /// </summary>
+    /// <typeparam name="T">Type of the enum</typeparam>
+    /// <param name="excluded">Enums to exclude from the randomization</param>
+    /// <returns>A randomly selected enum name from the given enum type</returns>
+    public static string GetRandomName<T>(params T[] excluded) where T : Enum
+    {
+        var names = Enum.GetNames(typeof(T)).Cast<T>().Where(v => !excluded.Contains(v)).ToArray();
+        var item = Rng.Next(0, names.Length);
+        return (string)names.GetValue(item);
+    }
+
+    /// <summary>
     /// Throws a <see cref="NotAnEnumException"/> if <paramref name="type"/> is not an enum.
     /// </summary>
     /// <param name="type">Type to check</param>
