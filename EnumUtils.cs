@@ -548,7 +548,7 @@ public static class EnumUtils
     /// </summary>
     /// <typeparam name="T">Type of the enum</typeparam>
     /// <returns><see langword="true"/> if it does, <see langword="false"/> if not.</returns>
-    public static bool IsPowerOfTwoEnum<T>() where T : Enum => IsFlagsEnum<T>();
+    public static bool IsPowerOfTwoEnum<T>() where T : Enum => _powerOfTwoTypes.Contains(typeof(T)) || typeof(T).IsDefined(typeof(FlagsAttribute), false)
 
     /// <summary>
     /// Does this enum use power of twos?
